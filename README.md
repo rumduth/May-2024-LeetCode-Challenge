@@ -1,2 +1,2 @@
-Collection of LeetCode challenge - May 2024
-Thong Nguyen
+# Collection of LeetCode challenge - May 2024
+## Thong Nguyen
