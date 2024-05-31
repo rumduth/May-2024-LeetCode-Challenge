@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans;
+        int m = s.size();
+        vector<vector<bool>> dp(m,vector<bool>(m,true));
+        for(int i = m - 1; i >= 0; i--){
+            for(int j = i; j < m; j++){
+                if(i == j){
+                    dp[i][j] = true;
+                }else{
+                    dp[i][j] = s[i] == s[j] && dp[i+1][j-1];
+                }
+            }
+        }
+        vector<string> v;
+        helper(ans,v,"",s,0,dp);
+        return ans;
+    }
+
+    void helper(vector<vector<string>>& ans, vector<string>& v, string& temp, string& s, int start, vector<vector<bool>>& dp){
+        if(start == s.size()){
+            ans.push_back(v);
+            return;
+        }
+        for(int end = start; end < s.length(); end++){
+            if(dp[start][end]){
+                v.push_back(s.substr(start,end-start+1));
+                helper(ans,v,)
+
+            }
+        }
+        
+    }
+};
