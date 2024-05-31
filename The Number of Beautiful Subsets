@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int beautifulSubsets(vector<int>& nums, int k) {
+        unordered_map<int, int> check;
+        int ans = -1;
+        helper(ans,nums,k,check,0);
+        return ans;
+    }
+
+    void helper(int& ans, vector<int>& nums, int k, unordered_map<int, int>& check, int start){
+        if(start == nums.size()){
+            ans++;
+            return;
+        }
+        
+        helper(ans,nums,k,check,start+1);
+        if(check[nums[start] - k] > 0 || check[nums[start]+ k] > 0)
+            return;
+        check[nums[start]]++;
+        helper(ans,nums,k,check,start+1);
+        check[nums[start]]--;
+    }
+};
