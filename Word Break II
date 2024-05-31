@@ -1,0 +1,79 @@
+class Solution {
+public:
+    struct TrieNode{
+        vector<TrieNode*> children;
+        bool isEnd;
+        TrieNode(){
+            children.resize(26);
+            for(int i = 0; i < 26; i++)
+                children[i] = nullptr;
+            isEnd = false;
+        }
+    };
+
+    struct Trie{
+        TrieNode* root;
+        Trie(){
+            root = new TrieNode();
+        }
+        void insert(string& word){
+            TrieNode* r = root;
+            for(auto& c: word){
+                if(!(r->children[c-'a']))
+                    r->children[c-'a'] = new TrieNode();
+                r = r->children[c-'a'];
+            }
+            r->isEnd = true;
+        }
+        bool search(string word){
+            TrieNode* r = root;
+            for(auto& c: word){
+                if(!(r->children[c-'a']))
+                    return false;
+                r = r->children[c-'a'];
+            }
+            return r->isEnd;
+        }
+    };
+    Trie trie = Trie();
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        for(string& word: wordDict){
+            trie.insert(word);
+        }
+
+        vector<vector<string>> combinations = depthFirstSearch(s);
+        vector<string> results;
+        for(auto& words: combinations)
+            results.push_back(join(words," "));
+        return results;
+    }
+
+    vector<vector<string>> depthFirstSearch(const string& s){
+        vector<vector<string>> results;
+        if(s.empty()){
+            results.push_back({});
+            return results;
+        }
+        for(int i = 1; i <= s.length(); i++){
+            if(trie.search(s.substr(0,i))){
+                for(auto suffixCombination: depthFirstSearch(s.substr(i))){
+                    suffixCombination.insert(suffixCombination.begin(),s.substr(0,i));
+                    results.push_back(suffixCombination);
+                }
+            }
+        }
+        return results;
+    }
+
+    string join(vector<string>& words, const string& delimiter){
+        string sentence;
+        cout<<words.size()<<endl;
+        for(int i = 0; i < words.size(); i++){
+            sentence += words[i];
+            if(i < words.size() - 1)
+                sentence+= delimiter;
+        }
+        return sentence;
+    }
+
+};
