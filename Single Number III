@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        long long totalXor = 0;
+        for(auto& n : nums)
+            totalXor ^= n;
+        
+        int flag = totalXor & (-totalXor);
+        int first = 0;
+        for(auto& n : nums){
+            if(n & flag)
+                first ^= n;
+        }
+        int second = totalXor ^ first;
+        return {first,second};
+    }
+};
