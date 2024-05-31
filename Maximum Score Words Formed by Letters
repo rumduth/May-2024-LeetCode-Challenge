@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+        // Create a frequency map for the given letters
+        unordered_map<char, int> count;
+        for (auto& c : letters) {
+            count[c]++;
+        }
+        
+        int ans = 0; // Initialize the answer to zero
+        int sum = 0; // Initialize the current sum score to zero
+        helper(count, score, sum, 0, ans, words); // Call the helper function
+        return ans; // Return the maximum score found
+    }
+
+private:
+    void helper(unordered_map<char, int>& count, vector<int>& score, int& sum, int index, int& ans, vector<string>& words) {
+        if (index == words.size()) { // Base case: all words are considered
+            ans = max(ans, sum); // Update the maximum score
+            return;
+        }
+                // Option 2: Skip the current word
+        helper(count, score, sum, index + 1, ans, words);
+        bool changed = false;
+        for (int i = 0; i < words[index].length(); i++) {
+            count[words[index][i]]--;
+            sum += score[words[index][i] - 'a'];
+            if (count[words[index][i]] < 0) {
+                changed = true;
+            }
+        }
+
+        if (changed) {
+            for (int i = 0; i < words[index].length(); i++) {
+                sum -= score[words[index][i] - 'a'];
+                count[words[index][i]]++;
+            }
+            return;
+        }
+
+        // Option 1: Include the current word
+        helper(count, score, sum, index + 1, ans, words);
+
+        // Backtrack: Restore the counts and sum
+        for (int i = 0; i < words[index].length(); i++) {
+            sum -= score[words[index][i] - 'a'];
+            count[words[index][i]]++;
+        }
+
+
+    }
+};
