@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int specialArray(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(),nums.end());
+        for(int i = 0; i <= n; i++){
+            auto leftBound = lower_bound(nums.begin(),nums.end(),i);
+            int cnt = nums.end() - leftBound;
+            if(cnt == i)
+                return i;
+        }
+        return -1;
+        
+    }
+};
