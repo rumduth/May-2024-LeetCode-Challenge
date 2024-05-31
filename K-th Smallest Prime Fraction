@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+        using Pair = pair<int,int>;
+        auto compare = [&](const Pair a, const Pair b){
+            return arr[a.first] * arr[b.second] > arr[a.second] * arr[b.first];
+        };
+
+        priority_queue<Pair, vector<Pair>, decltype(compare)> pq(compare);
+        for(int i = 1; i < arr.size(); i++){
+            pq.push({0,i});
+        }
+        for(int i = 1; i < k; i++){
+            Pair fraction = pq.top();
+            pq.pop();
+            if(fraction.first + 1 < fraction.second){
+                pq.push({fraction.first + 1, fraction.second});
+            }
+        }
+        return {arr[pq.top().first],arr[pq.top().second]};
+    }
+};
