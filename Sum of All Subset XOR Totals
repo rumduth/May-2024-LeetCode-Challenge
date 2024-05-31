@@ -1,0 +1,21 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var subsetXORSum = function(nums) {
+    let ans = 0;
+    let k = 0;
+    function helper(i){
+        if(i === nums.length)
+        {
+            ans = ans + k;
+            return;
+        }
+        helper(i+1);
+        k = k ^ nums[i];
+        helper(i+1);
+        k = k ^ nums[i];
+    }
+    helper(0);
+    return ans;
+};
